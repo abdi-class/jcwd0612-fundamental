@@ -1,14 +1,21 @@
 <script>
-  const database = ["Kaos", "Jaket", "Celana"];
+  const database = [
+    ["Kaos", 35000, 12],
+    ["Celana", 70000, 6],
+    ["Jaket", 40000, 3],
+  ];
 
   function lihatData() {
     // 1. Menyiapkan penampung output tampilan data
     let daftar = "=== Daftar Data ===\n";
     for (let index = 0; index < database.length; index++) {
       // 2. Mengakses data didalam array satu per satu
-      const value = database[index];
+      const [nama, harga, stock] = database[index];
       // 3. Menambahkan tiap data kedalam variable output
-      daftar += `${index + 1}. ${value}\n`;
+      daftar += `${index + 1}. ${nama} ${harga.toLocaleString("id", {
+        style: "currency",
+        currency: "IDR",
+      })} tersedia ${stock}\n`;
     }
     // 4. Menampilkan data output
     alert(daftar);
@@ -22,6 +29,38 @@
     alert(`Penambahan data ${nama} berhasil`);
   }
 
+  function perbaruiData() {
+    lihatData();
+    const indexStr = prompt("Masukkan nomor produk yang ingin diperbarui:");
+    const index = Number(indexStr) - 1;
+
+    if (index >= 0 && index < database.length) {
+      const pilihPembaruan =
+        prompt(`Data ${database[index][0]} mana yang mau diperbarui :
+      1. Nama
+      2. Harga
+      3. Stock`);
+      if (pilihPembaruan === "1") {
+        const namaBaru = prompt("Masukkan nama produk baru:");
+        const namaLama = database[index][0];
+        database[index][0] = namaBaru;
+        alert(`Produk "${namaLama}" telah diperbarui menjadi "${namaBaru}".`);
+      } else if (pilihPembaruan === "2") {
+        const hargaBaru = prompt("Masukkan harga produk baru:");
+        const hargaaLama = database[index][1];
+        database[index][1] = hargaBaru;
+        alert(`Harga "${hargaaLama}" telah diperbarui menjadi "${hargaBaru}".`);
+      } else if (pilihPembaruan === "3") {
+        const stockBaru = prompt("Masukkan stock produk baru:");
+        const stockLama = database[index][2];
+        database[index][2] = stockBaru;
+        alert(`Stock "${stockLama}" telah diperbarui menjadi "${stockBaru}".`);
+      }
+    } else {
+      alert("Nomor produk tidak valid.");
+    }
+  }
+
   do {
     const menu = prompt(`=== Menu Management Data ===
   1. Lihat data
@@ -29,7 +68,7 @@
   3. Perbarui data
   4. Hapus data
   5. Keluar
-  
+
   Masukkan nomor menu yang dipilih :`);
 
     if (menu === "1") {
@@ -37,7 +76,7 @@
     } else if (menu === "2") {
       tambahData();
     } else if (menu === "3") {
-      // perbaruiData();
+      perbaruiData();
     } else if (menu === "4") {
       // hapusData();
     } else if (menu === "5") {
